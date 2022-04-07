@@ -98,7 +98,10 @@ $("#submitButtonId").click(function(event) {
            {
                alert(data.message);
                $("#regForm")[0].reset();
-           }
+           },
+           failure: function(errMsg) {
+            alert(errMsg);
+          }
          });
 
     return false; // avoid to execute the actual submit of the form.
