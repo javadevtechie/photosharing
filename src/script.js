@@ -21,6 +21,10 @@ async function loadData() {
         .catch(error => console.error('Error:', error));;
 }
 */
+
+$(document).ready(function(){
+    $("#file-upload").hide();
+  });
 function createRow(myObj) {
     const tableBody = document.getElementById("tdata");
     var tr = document.createElement('TR');
@@ -104,5 +108,31 @@ $("#submitButtonId").click(function(event) {
           }
          });
 
-    return false; // avoid to execute the actual submit of the form.
+    return false; 
+});
+
+$("#login-button").click(function(event) {
+    var url = "/filemanagement/login"; 
+    var formData=formDataToJSON( $('#login-form'));
+    const obj = JSON.parse(formData);
+    console.log(obj);
+    $.ajax({
+           type: "POST",
+           url: url,
+           contentType: "application/json",
+           data: JSON.stringify( obj ),
+           success: function(data)
+           {
+               console.log(data.message);
+               $("#login-form")[0].reset();
+               $("#login-register").hide();
+               $("#file-upload").show();
+
+           },
+           error: function(data) {
+                  alert(data.responseJSON.message);
+          }
+         });
+
+    return false;
 });

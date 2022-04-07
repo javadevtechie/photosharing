@@ -5,15 +5,30 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads" });
 var app = express();
 app.set('view engine', 'ejs');
-
+const utf8 = require('utf8');
 
 app.post('/register', function (req, res) {
     let query = `INSERT INTO user (name,password,email) VALUES (?, ?,?);`;
-    mysqlConnection.query(query, [req.body.name,req.body.password,req.body.email], (err, rows) => {
+    mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.email], (err, rows) => {
         if (err) throw err;
         res.json({ message: "Registration has been completed successfully" });
     });
-    
+
+
+});
+app.post('/login', function (req, res) {
+
+    let query = `select *  from user where email=? and password=?;`;
+    mysqlConnection.query(query, [utf8.encode(req.body.email), req.body.password], (err, rows) => {
+        if (err) throw err;
+        if (rows.length > 0) {
+            res.json({ message: "Logged-In successfully" });
+        }
+        else {
+            res.status(301).json({message:"Username/Password incorrect"}).end() ;
+        }
+    });
+
 
 });
 app.get('/getall', function (req, res) {
@@ -36,11 +51,11 @@ function uploadFiles(req, res) {
     let ext = req.files[0].originalname.split(".")[req.files[0].originalname.split(".").length - 1];
     let query = `INSERT INTO document  (path, extension,originalname,user_id) VALUES (?, ?, ?,?);`;
     mysqlConnection.query(query, [req.files[0].path,
-        ext, req.files[0].originalname.replace('\\', '/'),1], (err, rows) => {
+        ext, req.files[0].originalname.replace('\\', '/'), 1], (err, rows) => {
             if (err) throw err;
             res.json({ message: "File has been uploaded successfully " });
         });
-   
+
 }
 app.get('/download/:filename/', function (req, res) {
 
