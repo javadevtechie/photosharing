@@ -22,7 +22,7 @@ app.post('/login', function (req, res) {
     mysqlConnection.query(query, [utf8.encode(req.body.email), req.body.password], (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
-            res.json({ message: "Logged-In successfully" });
+            res.json({ message: "Logged-In successfully",userid:rows[0].id });
         }
         else {
             res.status(301).json({message:"Username/Password incorrect"}).end() ;
@@ -33,8 +33,9 @@ app.post('/login', function (req, res) {
 });
 app.get('/getall', function (req, res) {
     mysqlConnection.query("select * from document", (err, rows, fields) => {
+        console.log(rows);
         if (!err) {
-            res.send(rows);
+            res.json(rows).end();
         }
         else {
             console.log("error");

@@ -110,7 +110,32 @@ $("#submitButtonId").click(function(event) {
 
     return false; 
 });
+function callFileManagement(){
+    $("#file-upload").show();
+    var url = "/filemanagement/getAll"; 
+    var formData=formDataToJSON( $('#regForm'));
+    const obj = JSON.parse(formData);
+    $.ajax({
+           type: "GET",
+           url: url,
+           success: function(data)
+           {
+            console.log(data);
+               $("#tdata").children("tr").remove();
+               for (let i = 0; i < data.length; i++) {
+                
+                createRow(response[i]);
+                }
+               
+           },
+           failure: function(errMsg) {
+            alert(errMsg);
+          }
+         });
 
+    return false; 
+
+}
 $("#login-button").click(function(event) {
     var url = "/filemanagement/login"; 
     var formData=formDataToJSON( $('#login-form'));
@@ -126,8 +151,9 @@ $("#login-button").click(function(event) {
                console.log(data.message);
                $("#login-form")[0].reset();
                $("#login-register").hide();
-               $("#file-upload").show();
-
+              
+               $('#userid').val(data.userid);
+               callFileManagement();
            },
            error: function(data) {
                   alert(data.responseJSON.message);

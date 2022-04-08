@@ -46,7 +46,7 @@
   </div>
 </nav>
 <div class="container-fluid bg-3 text-center" id="file-upload">    
-    
+    <input id="userid" type="hidden" name="userid" />
      <input id="fileupload" type="file" name="fileupload" />
       <button id="upload-button" onclick="uploadFile()"> Upload </button>
       <table border="1" id="result">
@@ -57,7 +57,12 @@
               <th>Action</th>
           </tr>
           <tbody id="tdata">
-  
+            <tr>
+                <td>1</td>
+                <td>File Name</td>
+                <td>UploadedBy</td>
+                <td>Action</td>
+            </tr>
              
           </tbody>
          
