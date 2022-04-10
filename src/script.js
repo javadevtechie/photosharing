@@ -1,76 +1,16 @@
-/*loadData();
-async function loadData() {
-    const list = document.getElementById("tdata");
-    while (list.hasChildNodes()) {
-        list.removeChild(list.firstChild);
-    }
-    await fetch('/file/getall', {
-        method: "GET",
-
-    }).then(res => res.json())
-        .then(response => {
-            if (response.length == 0) {
-                console.log(response);
-                createRow(null);
-            }
-            for (let i = 0; i < response.length; i++) {
-                console.log(response[i]);
-                createRow(response[i]);
-            }
-        })
-        .catch(error => console.error('Error:', error));;
-}
-*/
 
 $(document).ready(function () {
     $("#file-upload").hide();
 });
-function createRow(myObj) {
-    const tableBody = document.getElementById("tdata");
-    var tr = document.createElement('TR');
-    tableBody.appendChild(tr);
-    if (myObj != null) {
-        var td = document.createElement('TD');
-        td.width = '75';
-        td.appendChild(document.createTextNode(myObj.iddocument));
-        tr.appendChild(td);
-
-        var td = document.createElement('TD');
-        td.width = '75';
-        td.appendChild(document.createTextNode(myObj.originaname));
-        tr.appendChild(td);
-
-        var td = document.createElement('TD');
-        td.width = '75';
-        td.appendChild(document.createTextNode(myObj.updatedby));
-        tr.appendChild(td);
-
-        var td = document.createElement('TD');
-        td.width = '75';
-        var a = document.createElement('a');
-        var linkText = document.createTextNode("Download");
-        a.appendChild(linkText);
-        a.title = "Download";
-        a.href = "/file/download/" + myObj.path.split("\\")[1];
-        td.appendChild(a);
-        tr.appendChild(td);
-    }
-    else {
-        var td = document.createElement('TD');
-        td.width = '75';
-        td.colspan = "4"
-        td.appendChild(document.createTextNode("No Data"));
-        tr.appendChild(td);
-    }
-
-
-}
 function btn_click(val){
     var url = "/filemanagement/download/";
- 
+    let formData = new FormData();
+    alert(val);
+    formData.append("filename",val);
+    console.log(formData);
     $.ajax({
         type: "GET",
-        url: url,
+        url: url,  
         data:{"filename":val},
         success: function (data) {
 
@@ -86,7 +26,6 @@ async function uploadFile() {
     let formData = new FormData();
     formData.append("file", fileupload.files[0]);
     formData.append("userid",document.getElementById('userid').value);
-    console.log(formData);
     await fetch('/filemanagement/upload', {
         method: "POST",
         body: formData
@@ -110,6 +49,7 @@ $("#submitButtonId").click(function (event) {
     var url = "/filemanagement/register";
     var formData = formDataToJSON($('#regForm'));
     const obj = JSON.parse(formData);
+    console.log(obj);
     $.ajax({
         type: "POST",
         url: url,

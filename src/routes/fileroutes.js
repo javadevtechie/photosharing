@@ -2,7 +2,20 @@ var express = require('express');
 const mysqlConnection = require("../connection");
 const path = require("path");
 const multer = require("multer");
-const upload = multer({ dest: "uploads" });
+var fs = require("fs");
+var dir = "nov";   // PATH TO UPLOAD FILE
+if (!fs.existsSync(dir)) {  // CREATE DIRECTORY IF NOT FOUND
+  fs.mkdirSync(dir, { recursive: true });
+}
+const fileStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: fileStorageEngine });
 var app = express();
 app.set('view engine', 'ejs');
 const utf8 = require('utf8');
@@ -69,9 +82,9 @@ function uploadFiles(req, res) {
 
 }
 app.get('/download', function (req, res) {
-
-    const filename = req.body.fileName;
-    console.log(req.body);
+    var file ='C:/projects/filesharing/uploads/3c2cdb4f34e7f62adda4584248ed1e33';
+    //var fileLocation = path.join('./uploads',file);
+    console.log(file);
    
 });
 module.exports = app;
