@@ -7,15 +7,29 @@ var app = express();
 app.set('view engine', 'ejs');
 const utf8 = require('utf8');
 
+
 app.post('/register', function (req, res) {
     let query = `INSERT INTO user (name,password,email) VALUES (?, ?,?);`;
     mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.email], (err, rows) => {
         if (err) throw err;
         res.json({ message: "Registration has been completed successfully" });
     });
-
-
 });
+
+app.get('/getUserName/:id', function (req, res) {
+    const { id } = req.params;
+    let query = `select name from user where id=?;`;
+    mysqlConnection.query(query, [id], (err, rows) => {
+        if (err) throw err;
+        if (rows.length > 0) {
+            res.json({userid:rows[0].name });
+        }
+        else {
+            res.status(404).json({message:"username  not found"}).end() ;
+        }
+    });
+});
+
 app.post('/login', function (req, res) {
 
     let query = `select *  from user where email=? and password=?;`;
@@ -28,12 +42,9 @@ app.post('/login', function (req, res) {
             res.status(301).json({message:"Username/Password incorrect"}).end() ;
         }
     });
-
-
 });
 app.get('/getall', function (req, res) {
     mysqlConnection.query("select * from document", (err, rows, fields) => {
-        console.log(rows);
         if (!err) {
             res.json(rows).end();
         }
@@ -48,21 +59,19 @@ app.get('/', function (req, res) {
 });
 app.post("/upload", upload.array("file"), uploadFiles);
 function uploadFiles(req, res) {
-
     let ext = req.files[0].originalname.split(".")[req.files[0].originalname.split(".").length - 1];
     let query = `INSERT INTO document  (path, extension,originalname,user_id) VALUES (?, ?, ?,?);`;
     mysqlConnection.query(query, [req.files[0].path,
-        ext, req.files[0].originalname.replace('\\', '/'), 1], (err, rows) => {
+        ext, req.files[0].originalname.replace('\\', '/'), req.body.userid], (err, rows) => {
             if (err) throw err;
             res.json({ message: "File has been uploaded successfully " });
         });
 
 }
-app.get('/download/:filename/', function (req, res) {
+app.get('/download', function (req, res) {
 
-    const filename = req.params.filename;
-    console.log(filename);
-    //const file = `${__dirname}/upload-folder/dramaticpenguin.MOV`;
-    // res.download(file); // Set disposition and send it.
+    const filename = req.body.fileName;
+    console.log(req.body);
+   
 });
 module.exports = app;
