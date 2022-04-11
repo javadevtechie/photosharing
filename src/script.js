@@ -2,6 +2,18 @@
 $(document).ready(function () {
     $("#file-upload").hide();
 });
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:image/jpeg' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+  }
 function btn_click(val){
     var url = "/filemanagement/download/";
     let formData = new FormData();
@@ -13,7 +25,7 @@ function btn_click(val){
         url: url,  
         data:{"filename":val},
         success: function (data) {
-
+            download(val,data);
         },
         failure: function (errMsg) {
             alert(errMsg);
@@ -105,7 +117,7 @@ function callFileManagement() {
                         +  "<td>"+ j++ +"</td>"
                         +  "<td>"+ data[i].originalname +"</td>"
                         +  "<td>"+ getUserName(data[i].user_id) +"</td>"
-                        +  "<td> <button type='button' value='"+ data[i].path+"."+data[i].extension+"' onclick='btn_click(this.value)'>Download</button</td></tr>"
+                        +  "<td> <button type='button' value='"+ data[i].path+"' onclick='btn_click(this.value)'>Download</button</td></tr>"
                       );
                   }
             }

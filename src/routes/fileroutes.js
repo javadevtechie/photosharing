@@ -3,7 +3,7 @@ const mysqlConnection = require("../connection");
 const path = require("path");
 const multer = require("multer");
 var fs = require("fs");
-var dir = "nov";   // PATH TO UPLOAD FILE
+var dir = "fileUpload";   // PATH TO UPLOAD FILE
 if (!fs.existsSync(dir)) {  // CREATE DIRECTORY IF NOT FOUND
   fs.mkdirSync(dir, { recursive: true });
 }
@@ -82,9 +82,20 @@ function uploadFiles(req, res) {
 
 }
 app.get('/download', function (req, res) {
-    var file ='C:/projects/filesharing/uploads/3c2cdb4f34e7f62adda4584248ed1e33';
-    //var fileLocation = path.join('./uploads',file);
-    console.log(file);
+   var dirPath="./fileUpload/"
+    var filename =  dirPath+"RentalAggrement (1)-8079013.jpg";
+    console.log(filename); 
+    var readStream = fs.createReadStream(filename);
+ 
+    readStream.on('open', function () { 
+    readStream.pipe(res);
+  });
+
+    
    
 });
+
+
+
+
 module.exports = app;
