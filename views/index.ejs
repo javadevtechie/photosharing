@@ -47,8 +47,10 @@
 </nav>
 <div class="container-fluid bg-3 text-center" id="file-upload">    
     <input id="userid" type="hidden" name="userid" />
+    <a href="" download=""></a>
      <input id="fileupload" type="file" name="fileupload" />
       <button id="upload-button" onclick="uploadFile()"> Upload </button>
+      <a >More ></a>
       <table border="1" id="result">
           <tr>
               <th>S.No</th>
@@ -57,13 +59,6 @@
               <th>Action</th>
           </tr>
           <tbody id="tdata">
-            <tr>
-                <td>1</td>
-                <td>File Name</td>
-                <td>UploadedBy</td>
-                <td>Action</td>
-            </tr>
-             
           </tbody>
          
       </table>
@@ -146,9 +141,10 @@
     </div>
    
 </div><br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 
-
- <script src="../src/script.js" > </script>
+<script src="../src/script.js" > </script>
 <footer class="container-fluid text-center">
 
 </footer>

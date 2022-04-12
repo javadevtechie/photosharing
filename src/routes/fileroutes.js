@@ -20,7 +20,7 @@ var app = express();
 app.set('view engine', 'ejs');
 const utf8 = require('utf8');
 
-
+app.use('/fileUpload', express.static('fileUpload'))
 app.post('/register', function (req, res) {
     let query = `INSERT INTO user (name,password,email) VALUES (?, ?,?);`;
     mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.email], (err, rows) => {
@@ -82,15 +82,21 @@ function uploadFiles(req, res) {
 
 }
 app.get('/download', function (req, res) {
-   var dirPath="./fileUpload/"
-    var filename =  dirPath+"RentalAggrement (1)-8079013.jpg";
-    console.log(filename); 
-    var readStream = fs.createReadStream(filename);
+   // var filename = __dirname+req.query.filename;
+    console.log(req.query.filename); 
+    //var readStream = fs.createReadStream(filename);
  
-    readStream.on('open', function () { 
-    readStream.pipe(res);
-  });
+  
+    //res.download(req.query.filename);
+    res.download(req.query.filename, function(err){
+        if(err) {
+          // Check if headers have been sent
+          res.sendStatus(404);
+        }
 
+        // Don't need res.end() here since already sent
+      }
+    );
     
    
 });

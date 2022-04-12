@@ -3,36 +3,63 @@ $(document).ready(function () {
     $("#file-upload").hide();
 });
 function download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:image/jpeg' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-  
-    element.style.display = 'none';
-    document.body.appendChild(element);
-  
-    element.click();
-  
-    document.body.removeChild(element);
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:image/jpg,' + encodeURIComponent(text));
+    pom.setAttribute('download', "hhh.jpg");
+    pom.style.display = 'none';
+    document.body.appendChild(pom);
+    pom.click();
+    document.body.removeChild(pom);   
   }
+  function blobToFile(theBlob, fileName){       
+    return new File([theBlob], fileName, { lastModified: new Date().getTime(), type: theBlob.type })
+}
+function urltoFile(url, filename, mimeType){
+    return (fetch(url)
+        .then(function(res){return res.arrayBuffer();})
+        .then(function(buf){return new File([buf], filename,{type:mimeType});})
+    );
+}
 function btn_click(val){
     var url = "/filemanagement/download/";
     let formData = new FormData();
-    alert(val);
-    formData.append("filename",val);
-    console.log(formData);
-    $.ajax({
-        type: "GET",
-        url: url,  
-        data:{"filename":val},
-        success: function (data) {
-            download(val,data);
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
-        }
+    formData.append("filename",val); 
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: url,  
+            data:{"filename":val},
+            success: function (data) {
+                const fileURL = window.URL.createObjectURL(new Blob([data]));
+                const fileLink = document.createElement('a');
+                fileLink.href = val;
+                fileLink.setAttribute('download', val.split("\\")[1]);
+                document.body.appendChild(fileLink);
+                fileLink.click();
+                fileLink.remove();
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
     });
+   
     return ;
 }
+var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
 async function uploadFile() {
 
     let formData = new FormData();
