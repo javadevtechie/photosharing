@@ -132,7 +132,7 @@ $("#regButton").click(function (event) {
     else  if(obj.conpassword==''){
         alert("Confirm Password should not be empty");
     }
-    else  if(obj.conpassword.localeCompare(obj.password)===-1){
+    else  if(obj.conpassword.localeCompare(obj.password)!=0){
         alert("Password and confirm password should be equal");
     }
     else{
