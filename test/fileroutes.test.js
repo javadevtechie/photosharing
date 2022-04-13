@@ -18,7 +18,7 @@ describe('index page respose', function() {
 
 describe('Get all method', function() {
 
-    it('should return OK status', function() {
+    it('Get all records', function() {
       return request(app)
         .get('/getall')
         .then(function(response){
@@ -26,3 +26,27 @@ describe('Get all method', function() {
         })
     });
 });
+
+describe('GetId', function() {
+    it('Get user by Id', function (done) {
+        request(app)
+            .get('/getUserName/68')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200, done);
+    });
+    
+});
+
+describe('GetId', function() {
+    it('Invalid userid ', function (done) {
+        request(app)
+            .get('/getUserName/6')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    
+});
+
+
