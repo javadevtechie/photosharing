@@ -84,9 +84,13 @@ function formDataToJSON(form) {
     return JSON.stringify(obj);
 }
 
-$("#submitButtonId").click(function (event) {
+$("#regButton").click(function (event) {
+
+  
     var url = "/filemanagement/register";
+    
     var formData = formDataToJSON($('#regForm'));
+
     const obj = JSON.parse(formData);
     console.log(obj);
     $.ajax({

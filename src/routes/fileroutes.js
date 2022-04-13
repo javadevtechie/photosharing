@@ -3,10 +3,12 @@ const mysqlConnection = require("../connection");
 const path = require("path");
 const multer = require("multer");
 var fs = require("fs");
-var dir = "fileUpload";   // PATH TO UPLOAD FILE
-if (!fs.existsSync(dir)) {  // CREATE DIRECTORY IF NOT FOUND
+var dir = "fileUpload";   
+
+if (!fs.existsSync(dir)) {  
   fs.mkdirSync(dir, { recursive: true });
 }
+
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, dir);
@@ -20,7 +22,9 @@ var app = express();
 app.set('view engine', 'ejs');
 const utf8 = require('utf8');
 
-app.use('/fileUpload', express.static('fileUpload'))
+app.use('/fileUpload', express.static('fileUpload'));
+
+
 app.post('/register', function (req, res) {
     let query = `INSERT INTO user (name,password,email) VALUES (?, ?,?);`;
     mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.email], (err, rows) => {
@@ -82,23 +86,16 @@ function uploadFiles(req, res) {
 
 }
 app.get('/download', function (req, res) {
-   // var filename = __dirname+req.query.filename;
-    console.log(req.query.filename); 
-    //var readStream = fs.createReadStream(filename);
- 
   
-    //res.download(req.query.filename);
+    console.log(req.query.filename); 
+    
     res.download(req.query.filename, function(err){
         if(err) {
-          // Check if headers have been sent
           res.sendStatus(404);
         }
-
-        // Don't need res.end() here since already sent
       }
     );
-    
-   
+
 });
 
 
