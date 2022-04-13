@@ -33,27 +33,50 @@
       </button>
       <a class="navbar-brand" href="#">Arcvibes</a>
     </div>
+    <ul class="nav navbar-nav navbar-right" id="logout-button">
+        <li><a href="#" class="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
     <div class="collapse navbar-collapse" id="myNavbar">
-    
+        
     </div>
   </div>
 </nav>
-<div class="container-fluid bg-3 text-center" id="file-upload">    
-    <input id="userid" type="hidden" name="userid" />
+<div class="container-fluid bg-3 text-center" id="file-upload">   
    
-     <input id="fileupload" type="file" name="fileupload" />
-      <button id="upload-button" onclick="uploadFile()"> Upload </button>
-      <table border="1" id="result">
-          <tr>
-              <th>S.No</th>
-              <th>File Name</th>
-              <th>UploadedBy</th>
-              <th>Action</th>
-          </tr>
-          <tbody id="tdata">
-          </tbody>
-         
-      </table>
+    <input id="userid" type="hidden" name="userid" />
+    <div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                        <input class="form-control" id="fileupload" type="file" name="fileupload" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button id="upload-button" onclick="uploadFile()" class="btn btn-sm btn-primary"> Upload </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <table id="result" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>File Name</th>
+                        <th>UploadedBy</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                  <tbody id="tdata">
+                  </tbody>
+                 
+              </table>
+        </div>
+    </div>
+    </div>
+    
+     
      
   </div>
 
@@ -243,7 +266,7 @@ $(document).ready(function () {
             }
             if ((passwordValue.length < 3)||
                 (passwordValue.length > 10)) {
-                    alert(passwordValue);
+                    
                 $('#passcheck').show();
                 $('#passcheck').html
     ("**length of your password must be between 3 and 10");

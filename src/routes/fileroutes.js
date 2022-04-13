@@ -27,7 +27,7 @@ app.use('/fileUpload', express.static('fileUpload'));
 
 app.post('/register', function (req, res) {
     let query = `INSERT INTO user (name,password,email) VALUES (?, ?,?);`;
-    mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.email], (err, rows) => {
+    mysqlConnection.query(query, [req.body.lname + req.body.fname, req.body.password, req.body.remail], (err, rows) => {
         if (err) throw err;
         res.json({ message: "Registration has been completed successfully" });
     });
@@ -53,7 +53,7 @@ app.post('/login', function (req, res) {
     mysqlConnection.query(query, [utf8.encode(req.body.email), req.body.password], (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
-            res.json({ message: "Logged-In successfully",userid:rows[0].id });
+            res.status(200).json({ message: "Logged-In successfully",userid:rows[0].id ,username:rows[0].name});
         }
         else {
             res.status(301).json({message:"Username/Password incorrect"}).end() ;

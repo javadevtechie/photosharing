@@ -1,6 +1,8 @@
 
 $(document).ready(function () {
     $("#file-upload").hide();
+    $("#logout-button").hide();
+   
 });
 function download(filename, text) {
     var pom = document.createElement('a');
@@ -69,6 +71,7 @@ async function uploadFile() {
         method: "POST",
         body: formData
     });
+ 
     callFileManagement();
 }
 
@@ -185,6 +188,7 @@ $("#login-button").click(function (event) {
             $("#login-register").hide();
             $('#userid').val(data.userid);
             callFileManagement();
+            $("#logout-button").show();
         },
         error: function (data) {
             alert(data.responseJSON.message);
@@ -192,4 +196,11 @@ $("#login-button").click(function (event) {
     });
 
     return false;
+});
+
+$("a.logout").click(function (event) {
+    $("#login-register").show();
+    $('#userid').val('');
+    $("#logout-button").hide();
+    $("#file-upload").hide();
 });
