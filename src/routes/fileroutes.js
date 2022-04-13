@@ -50,7 +50,7 @@ app.get('/getUserName/:id', function (req, res) {
 app.post('/login', function (req, res) {
 
     let query = `select *  from user where email=? and password=?;`;
-    mysqlConnection.query(query, [utf8.encode(req.body.email), req.body.password], (err, rows) => {
+    mysqlConnection.query(query, [utf8.encode(req.body.email), req.body.lpassword], (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
             res.status(200).json({ message: "Logged-In successfully",userid:rows[0].id ,username:rows[0].name});

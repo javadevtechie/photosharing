@@ -103,7 +103,7 @@
                                 <input type="text" id="email" name="email" placeholder="Email..." class="form-username form-control" id="form-username">
                             </div>
                             <div class="form-group">
-                                <input type="password" id="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
+                                <input type="password" id="lpassword" name="lpassword" placeholder="Password..." class="form-password form-control" id="form-password">
                             </div>
                             <button type="button" id="login-button" class="btn">Sign in!</button>
                         </form>
@@ -124,42 +124,37 @@
                         </div>
                     </div>
                     <div class="form-bottom">
+                        <div class="alert alert-success" id="success-alert">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Success!</strong>
+                            New user added successfully
+                         </div>
                         <form role="form" action="" method="post" class="registration-form" id="regForm">
                             <div class="form-group">
                                
                                 <input type="text" id="fname" name="fname" placeholder="First name..." class="form-first-name form-control" id="form-first-name" required>
-                                <h5 id="usercheck" style="color: red;" >
-                                    **FirstName is missing
-                              </h5>
+                               
                             </div>
                             <div class="form-group">
                                
                                 <input type="text" id="lname" name="lname" placeholder="Last name..." class="form-first-name form-control" id="form-first-name" required>
-                                <h5 id="lusercheck" style="color: red;" >
-                                    **Last Name is missing
-                              </h5>
+                               
                             </div>
                             <div class="form-group">
                                 
                                 <input type="text" id="remail" name="remail" placeholder="Email..." class="form-last-name form-control" id="form-last-name" required>
-                                <h5 id="emailError" style="color: red;" >
-                                    **Email  is missing
-                              </h5>
+                               
                             </div>
                             <div class="form-group">
                                
                                 <input type="password" id="password" name="password" placeholder="Password..." class="form-last-name form-control" id="form-last-name" required>
-                                <h5 id="passcheck" style="color: red;" >
-                                    **Password is missing
-                              </h5>
+                              
                             </div>
                             <div class="form-group">
                                
                                
                                 <input type="password" id="conpassword" name="conpassword" placeholder="Confirm Password..." class="form-last-name form-control" id="form-last-name" required>
-                                <h5 id="conpasscheck" style="color: red;" >
-                                    **Confirm Password is missing
-                              </h5>
+                                
                             </div>
                             <button type="button" class="btn" id="regButton">Sign me up!</button>
                         </form>
@@ -174,138 +169,7 @@
 </div><br>
 
 <script src="../src/script.js" > </script>
-<script>
 
-$(document).ready(function () {
-    
-    // Validate Username
-        $('#usercheck').hide();   
-        let usernameError = true;
-        $('#fname').keyup(function () {
-            validateUsername();
-        });
-         
-        function validateUsername() {
-          let usernameValue = $('#fname').val();
-          if (usernameValue.length == '') {
-          $('#usercheck').show();
-              usernameError = false;
-              return false;
-          }
-          else if((usernameValue.length < 3)||
-                  (usernameValue.length > 10)) {
-              $('#usercheck').show();
-              $('#usercheck').html
-    ("**length of name must be between 3 and 10");
-              usernameError = false;
-              return false;
-          }
-          else {
-              $('#usercheck').hide();
-          }
-        }
-     
-
-        $('#lusercheck').hide();   
-        let lusernameError = true;
-        $('#lname').keyup(function () {
-            lvalidateUsername();
-        });
-         
-        function lvalidateUsername() {
-          let lusernameValue = $('#lname').val();
-         
-          if (lusernameValue.length == '') {
-          $('#lusercheck').show();
-              lusernameError = false;
-              return false;
-          }
-          else if((lusernameValue.length < 3)||
-                  (lusernameValue.length > 10)) {
-              $('#lusercheck').show();
-              $('#lusercheck').html("**length of name must be between 3 and 10");
-              lusernameError = false;
-              return false;
-          }
-          else {
-              $('#lusercheck').hide();
-          }
-        }
-
-       // Validate Email
-      $('#emailError').hide();   
-        const email =
-            document.getElementById('remail');
-        email.addEventListener('blur', ()=>{
-
-           let regex =
-    /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
-           let s = email.value;
-           if(regex.test(s)){
-            $('#emailError').hide(); 
-            }
-            else{
-                $('#emailError').show(); 
-              $('#emailError').html("**invalid email");
-            }
-        })
-         
-       // Validate Password
-        $('#passcheck').hide();
-        let passwordError = true;
-        $('#password').keyup(function () {
-            validatePassword();
-        });
-        function validatePassword() {
-            let passwordValue =
-                $('#password').val();
-            if (passwordValue.length == '') {
-                $('#passcheck').show();
-                passwordError = false;
-                return false;
-            }
-            if ((passwordValue.length < 3)||
-                (passwordValue.length > 10)) {
-                    
-                $('#passcheck').show();
-                $('#passcheck').html
-    ("**length of your password must be between 3 and 10");
-                $('#passcheck').css("color", "red");
-                passwordError = false;
-                return false;
-            } else {
-                $('#passcheck').hide();
-            }
-        }
-             
-    // Validate Confirm Password
-        $('#conpasscheck').hide();
-        let confirmPasswordError = true;
-        $('#conpassword').keyup(function () {
-            validateConfirmPassword();
-        });
-        function validateConfirmPassword() {
-            let confirmPasswordValue =
-                $('#conpassword').val();
-            let passwordValue =
-                $('#password').val();
-            if (passwordValue != confirmPasswordValue) {
-                $('#conpasscheck').show();
-                $('#conpasscheck').html(
-                    "**Password didn't Match");
-                $('#conpasscheck').css(
-                    "color", "red");
-                confirmPasswordError = false;
-                return false;
-            } else {
-                $('#conpasscheck').hide();
-            }
-        }
-         
-    // Submit button
-     
-    });
-</script>
 <footer class="container-fluid text-center">
 
 </footer>

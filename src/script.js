@@ -2,6 +2,9 @@
 $(document).ready(function () {
     $("#file-upload").hide();
     $("#logout-button").hide();
+    $("#success-alert").hide();
+    
+    
    
 });
 function download(filename, text) {
@@ -86,6 +89,20 @@ function formDataToJSON(form) {
     }
     return JSON.stringify(obj);
 }
+function validateEmail(email) 
+    {
+      var  result = email.replace("%40", "@");
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (filter.test(result)) {
+      // Yay! valid
+      return true;
+    }
+    else
+      {
+          return false;
+        }
+    }
+    
 
 $("#regButton").click(function (event) {
 
@@ -96,19 +113,46 @@ $("#regButton").click(function (event) {
 
     const obj = JSON.parse(formData);
     console.log(obj);
-    $.ajax({
-        type: "POST",
-        url: url,
-        contentType: "application/json",
-        data: JSON.stringify(obj),
-        success: function (data) {
-            alert(data.message);
-            $("#regForm")[0].reset();
-        },
-        failure: function (errMsg) {
-            alert(errMsg);
-        }
-    });
+    console.log(obj.conpassword.localeCompare(obj.password));
+   
+   // alert(re.test(obj.remail));
+    if(obj.fname==''){
+        alert("First name should not be empty");
+    }
+   else if(obj.lname==''){
+        alert("Last name should not be empty");
+    }
+    
+  else if(obj.remail=='' || !validateEmail(obj.remail)){
+        alert("Email should not be empty/invalid");
+    }
+  else  if(obj.password==''){
+        alert("Password should not be empty");
+    }
+    else  if(obj.conpassword==''){
+        alert("Confirm Password should not be empty");
+    }
+    else  if(obj.conpassword.localeCompare(obj.password)===-1){
+        alert("Password and confirm password should be equal");
+    }
+    else{
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json",
+            data: JSON.stringify(obj),
+            success: function (data) {
+               
+                $("#regForm")[0].reset();
+                $("#success-alert").show();
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+  /*  
+   */
 
     return false;
 });
@@ -177,6 +221,13 @@ $("#login-button").click(function (event) {
     var formData = formDataToJSON($('#login-form'));
     const obj = JSON.parse(formData);
     console.log(obj);
+    if(obj.email=='' || !validateEmail(obj.email)){
+        alert("Email should not be empty/invalid");
+    }
+  else  if(obj.lpassword==''){
+        alert("Password should not be empty");
+    }
+else
     $.ajax({
         type: "POST",
         url: url,
